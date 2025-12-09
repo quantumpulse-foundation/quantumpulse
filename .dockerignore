@@ -1,0 +1,29 @@
+# Build directories
+build/
+cmake-build-*/
+
+# Logs and data
+logs/
+data/
+backups/
+
+# Wallets (sensitive)
+wallets/
+
+# Node modules
+web/node_modules/
+web/dist/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary
+*.tmp
+*.log

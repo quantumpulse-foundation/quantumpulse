@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  # QuantumPulse Daemon
+  quantumpulsed:
+    build: .
+    container_name: qp-node
+    ports:
+      - "8332:8332" # RPC
+      - "8333:8333" # P2P
+    volumes:
+      - qp-data:/data
+    restart: always
+    networks:
+      - qp-network
+    healthcheck:
+      test: [ "CMD", "/app/build/quantumpulse-cli", "getblockchaininfo" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Block Explorer
+  explorer:
+    image: nginx:alpine
+    container_name: qp-explorer
+    ports:
+      - "9000:80"
+    volumes:
+      - ./explorer:/usr/share/nginx/html:ro
+    depends_on:
+      - quantumpulsed
+    restart: always
+    networks:
+      - qp-network
+
+  # Prometheus (Monitoring)
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: qp-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    restart: always
+    networks:
+      - qp-network
+
+  # Grafana (Dashboard)
+  grafana:
+    image: grafana/grafana:latest
+    container_name: qp-grafana
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=quantumpulse123
+    volumes:
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - prometheus
+    restart: always
+    networks:
+      - qp-network
+
+volumes:
+  qp-data:
+  grafana-data:
+
+
+networks:
+  qp-network:
+    driver: bridge

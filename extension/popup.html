@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>QuantumPulse Wallet</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 360px;
+            min-height: 500px;
+            font-family: 'Segoe UI', sans-serif;
+            background: #0a0a0f;
+            color: #fff;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .header span {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .balance {
+            padding: 24px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .balance-label {
+            font-size: 12px;
+            color: #a0a0b0;
+        }
+
+        .balance-value {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 8px 0;
+        }
+
+        .balance-usd {
+            font-size: 14px;
+            color: #10b981;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            padding: 16px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: #6366f1;
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background: #1a1a25;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section {
+            padding: 16px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #a0a0b0;
+        }
+
+        .address {
+            background: #1a1a25;
+            padding: 12px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 12px;
+            word-break: break-all;
+        }
+
+        .tx-list {
+            list-style: none;
+        }
+
+        .tx-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px;
+            background: #1a1a25;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .tx-amount {
+            font-weight: 600;
+        }
+
+        .tx-amount.in {
+            color: #10b981;
+        }
+
+        .tx-amount.out {
+            color: #ef4444;
+        }
+
+        .footer {
+            padding: 16px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .price {
+            font-size: 13px;
+            color: #a0a0b0;
+        }
+
+        .price span {
+            color: #10b981;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>QuantumPulse Wallet</h1>
+        <span>Quantum-Resistant Security</span>
+    </div>
+
+    <div class="balance">
+        <div class="balance-label">Total Balance</div>
+        <div class="balance-value" id="balance">0.00 QP</div>
+        <div class="balance-usd" id="balanceUsd">≈ $0.00 USD</div>
+    </div>
+
+    <div class="actions">
+        <button class="btn btn-primary" id="sendBtn">📤 Send</button>
+        <button class="btn btn-secondary" id="receiveBtn">📥 Receive</button>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Your Address</div>
+        <div class="address" id="address">Loading...</div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Recent Transactions</div>
+        <ul class="tx-list" id="txList">
+            <li class="tx-item">
+                <span>Received</span>
+                <span class="tx-amount in">+100 QP</span>
+            </li>
+            <li class="tx-item">
+                <span>Sent</span>
+                <span class="tx-amount out">-25 QP</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="footer">
+        <div class="price">QP Price: <span id="price">$600,000</span></div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+
+</html>

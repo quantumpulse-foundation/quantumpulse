@@ -1,0 +1,39 @@
+{
+    "name": "quantumpulse-desktop",
+    "version": "7.0.0",
+    "description": "QuantumPulse Desktop Wallet",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron .",
+        "build": "electron-builder",
+        "build:win": "electron-builder --win",
+        "build:mac": "electron-builder --mac",
+        "build:linux": "electron-builder --linux"
+    },
+    "build": {
+        "appId": "io.quantumpulse.wallet",
+        "productName": "QuantumPulse Wallet",
+        "directories": {
+            "output": "dist"
+        },
+        "win": {
+            "target": "nsis",
+            "icon": "assets/icon.ico"
+        },
+        "mac": {
+            "target": "dmg",
+            "icon": "assets/icon.icns"
+        },
+        "linux": {
+            "target": "AppImage",
+            "icon": "assets/icon.png"
+        }
+    },
+    "dependencies": {
+        "electron-store": "^8.1.0"
+    },
+    "devDependencies": {
+        "electron": "^27.0.0",
+        "electron-builder": "^24.6.0"
+    }
+}

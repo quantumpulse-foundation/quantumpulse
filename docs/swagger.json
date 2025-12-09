@@ -1,0 +1,381 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "QuantumPulse Blockchain API",
+        "description": "REST API for QuantumPulse cryptocurrency blockchain. Secure, fast, and quantum-resistant.",
+        "version": "7.0.0",
+        "contact": {
+            "name": "QuantumPulse Team",
+            "email": "api@quantumpulse.io"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080",
+            "description": "Development server"
+        },
+        {
+            "url": "https://api.quantumpulse.io",
+            "description": "Production server"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Blockchain",
+            "description": "Blockchain operations"
+        },
+        {
+            "name": "Wallet",
+            "description": "Wallet management"
+        },
+        {
+            "name": "Mining",
+            "description": "Mining operations"
+        },
+        {
+            "name": "Transactions",
+            "description": "Transaction management"
+        }
+    ],
+    "paths": {
+        "/api/info": {
+            "get": {
+                "tags": [
+                    "Blockchain"
+                ],
+                "summary": "Get blockchain information",
+                "description": "Returns current blockchain status and statistics",
+                "responses": {
+                    "200": {
+                        "description": "Blockchain info",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BlockchainInfo"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/balance/{address}": {
+            "get": {
+                "tags": [
+                    "Wallet"
+                ],
+                "summary": "Get account balance",
+                "parameters": [
+                    {
+                        "name": "address",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "pub_v11_abc123..."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Account balance",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Balance"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Address not found"
+                    }
+                }
+            }
+        },
+        "/api/transaction": {
+            "post": {
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "Create a new transaction",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TransactionRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Transaction created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TransactionResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            }
+        },
+        "/api/blocks": {
+            "get": {
+                "tags": [
+                    "Blockchain"
+                ],
+                "summary": "Get recent blocks",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "default": 10
+                        },
+                        "description": "Number of blocks to return"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of blocks",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BlockList"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/mine": {
+            "post": {
+                "tags": [
+                    "Mining"
+                ],
+                "summary": "Start mining a new block",
+                "responses": {
+                    "200": {
+                        "description": "Mining started",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MiningStatus"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Mining limit reached"
+                    }
+                }
+            }
+        },
+        "/api/price": {
+            "get": {
+                "tags": [
+                    "Blockchain"
+                ],
+                "summary": "Get current QP price",
+                "responses": {
+                    "200": {
+                        "description": "Current price (minimum $600,000)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Price"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "BlockchainInfo": {
+                "type": "object",
+                "properties": {
+                    "version": {
+                        "type": "string",
+                        "example": "7.0.0"
+                    },
+                    "chainLength": {
+                        "type": "integer",
+                        "example": 16
+                    },
+                    "totalMinedCoins": {
+                        "type": "number",
+                        "example": 0
+                    },
+                    "miningLimit": {
+                        "type": "integer",
+                        "example": 3000000
+                    },
+                    "preminedCoins": {
+                        "type": "integer",
+                        "example": 2000000
+                    },
+                    "preminedAccount": {
+                        "type": "string",
+                        "example": "Shankar-Lal-Khati"
+                    },
+                    "minimumPrice": {
+                        "type": "integer",
+                        "example": 600000
+                    },
+                    "shards": {
+                        "type": "integer",
+                        "example": 2048
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "running"
+                    }
+                }
+            },
+            "Balance": {
+                "type": "object",
+                "properties": {
+                    "address": {
+                        "type": "string"
+                    },
+                    "balance": {
+                        "type": "number"
+                    },
+                    "currency": {
+                        "type": "string",
+                        "example": "QP"
+                    }
+                }
+            },
+            "TransactionRequest": {
+                "type": "object",
+                "required": [
+                    "from",
+                    "to",
+                    "amount"
+                ],
+                "properties": {
+                    "from": {
+                        "type": "string",
+                        "description": "Sender address"
+                    },
+                    "to": {
+                        "type": "string",
+                        "description": "Recipient address"
+                    },
+                    "amount": {
+                        "type": "number",
+                        "description": "Amount in QP"
+                    },
+                    "fee": {
+                        "type": "number",
+                        "default": 0.0001
+                    }
+                }
+            },
+            "TransactionResponse": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "example": "pending"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "txId": {
+                        "type": "string"
+                    }
+                }
+            },
+            "BlockList": {
+                "type": "object",
+                "properties": {
+                    "blocks": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Block"
+                        }
+                    },
+                    "totalBlocks": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "Block": {
+                "type": "object",
+                "properties": {
+                    "index": {
+                        "type": "integer"
+                    },
+                    "hash": {
+                        "type": "string"
+                    },
+                    "prevHash": {
+                        "type": "string"
+                    },
+                    "timestamp": {
+                        "type": "integer"
+                    },
+                    "transactions": {
+                        "type": "integer"
+                    },
+                    "nonce": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "MiningStatus": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string"
+                    },
+                    "difficulty": {
+                        "type": "integer"
+                    },
+                    "reward": {
+                        "type": "number"
+                    }
+                }
+            },
+            "Price": {
+                "type": "object",
+                "properties": {
+                    "price": {
+                        "type": "integer",
+                        "example": 600000
+                    },
+                    "currency": {
+                        "type": "string",
+                        "example": "USD"
+                    },
+                    "minimumPrice": {
+                        "type": "integer",
+                        "example": 600000
+                    },
+                    "guaranteed": {
+                        "type": "boolean",
+                        "example": true
+                    }
+                }
+            }
+        }
+    }
+}

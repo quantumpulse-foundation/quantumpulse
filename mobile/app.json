@@ -1,0 +1,29 @@
+{
+    "expo": {
+        "name": "QuantumPulse",
+        "slug": "quantumpulse-mobile",
+        "version": "7.0.0",
+        "orientation": "portrait",
+        "icon": "./assets/icon.png",
+        "userInterfaceStyle": "dark",
+        "splash": {
+            "backgroundColor": "#0a0a0f"
+        },
+        "assetBundlePatterns": [
+            "**/*"
+        ],
+        "ios": {
+            "supportsTablet": true,
+            "bundleIdentifier": "io.quantumpulse.wallet"
+        },
+        "android": {
+            "adaptiveIcon": {
+                "backgroundColor": "#0a0a0f"
+            },
+            "package": "io.quantumpulse.wallet"
+        },
+        "web": {
+            "favicon": "./assets/favicon.png"
+        }
+    }
+}

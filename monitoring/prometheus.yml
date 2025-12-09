@@ -1,0 +1,21 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'quantumpulse'
+    static_configs:
+      - targets: ['localhost:8080']
+    metrics_path: '/api/metrics'
+    
+  - job_name: 'quantumpulse-node'
+    static_configs:
+      - targets: ['localhost:8082']
+    metrics_path: '/metrics'
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: []
+
+rule_files: []
