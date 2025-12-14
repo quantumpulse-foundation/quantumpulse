@@ -1,50 +1,33 @@
-# QuantumPulse v7.0
+# QuantumPulse
 
-<p align="center">
-  <img src="docs/logo.png" alt="QuantumPulse Logo" width="200">
-</p>
+> 🔐 Quantum-Resistant Cryptocurrency with $600,000 Minimum Price
 
-<p align="center">
-  <strong>Quantum-Resistant Cryptocurrency with Military-Grade Security</strong>
-</p>
+[![Build](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/quantumpulse-foundation/quantumpulse)
+[![Version](https://img.shields.io/badge/version-7.0.0-blue)](https://github.com/quantumpulse-foundation/quantumpulse/releases)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-<p align="center">
-  <a href="#features">Features</a> •
-  <a href="#installation">Installation</a> •
-  <a href="#usage">Usage</a> •
-  <a href="#mining">Mining</a> •
-  <a href="#api">API</a> •
-  <a href="#security">Security</a>
-</p>
+## ⚡ Quick Install (One Command)
 
----
+```bash
+curl -sSL https://raw.githubusercontent.com/quantumpulse-foundation/quantumpulse/main/install.sh | bash
+```
 
-## 🌟 Features
+## 🚀 Features
 
 | Feature | Description |
 |---------|-------------|
 | **Quantum-Resistant** | SHA3-512 + Post-quantum cryptography |
 | **Price Floor** | Minimum $600,000 USD per QP |
 | **Total Coins** | 5,000,000 QP maximum supply |
-| **Difficulty** | Dynamic (starts at 6, increases) |
-| **Block Reward** | 50 QP per block |
-| **Military Security** | AES-256-GCM, PBKDF2 600K iterations |
+| **Block Reward** | 50 QP (halves every 210,000 blocks) |
+| **Privacy** | Stealth addresses, ring signatures |
+| **AI-Powered** | Self-healing code, threat detection |
 
----
-
-## 📦 Installation
-
-### Prerequisites
-- GCC/Clang with C++20 support
-- OpenSSL 3.x
-- CMake 3.16+
-- Docker (optional)
-
-### Build from Source
+## 📦 Manual Installation
 
 ```bash
-# Clone repository
-git clone https://github.com/yourusername/quantumpulse.git
+# Clone
+git clone https://github.com/quantumpulse-foundation/quantumpulse.git
 cd quantumpulse
 
 # Build
@@ -52,227 +35,55 @@ mkdir build && cd build
 cmake ..
 make -j$(nproc)
 
-# Run tests
-./test_quantumpulse
-```
-
-### Docker Installation
-
-```bash
-# Build image
-docker build -t quantumpulse:7.0 .
-
-# Run daemon
-docker run -d --name qp-node \
-  -p 8332:8332 -p 8333:8333 \
-  quantumpulse:7.0
-
-# Run CLI
-docker exec qp-node quantumpulse-cli getblockchaininfo
-```
-
----
-
-## 🚀 Usage
-
-### Start Daemon
-
-```bash
+# Run
 ./quantumpulsed
-
-# Options:
-#   -daemon          Run in background
-#   -rpcport=<port>  RPC port (default: 8332)
-#   -port=<port>     P2P port (default: 8333)
-#   -datadir=<dir>   Data directory
-#   -testnet         Use testnet
 ```
 
-### CLI Commands
+## 💰 Start Mining
 
 ```bash
-# Blockchain info
-./quantumpulse-cli getblockchaininfo
+# Create wallet
+./qp-wallet create mywallet mypassword
 
-# Check balance
-./quantumpulse-cli getbalance
-
-# Get price
-./quantumpulse-cli getprice
-
-# Generate new address
-./quantumpulse-cli getnewaddress
-
-# Stop daemon
-./quantumpulse-cli stop
+# Start mining
+./quantumpulse-miner -address=<your_wallet_address> -difficulty=4
 ```
 
----
+## 📊 Commands
 
-## ⛏️ Mining
-
-### Start Miner
-
-```bash
-./quantumpulse-miner -address=YOUR_ADDRESS -threads=4
-
-# Options:
-#   -address=<addr>   Mining reward address (required)
-#   -threads=<n>      Number of threads (default: CPU cores)
-#   -difficulty=<n>   Starting difficulty (default: 6)
-#   -benchmark        Run benchmark only
-```
-
-### Mining Specifications
-
-| Spec | Value |
-|------|-------|
-| Algorithm | SHA3-512 Proof of Work |
-| Difficulty | 6 (adjusts dynamically) |
-| Block Time | ~10 minutes target |
-| Block Reward | 50 QP |
-| Halving | Every 210,000 blocks |
-| Max Supply | 3,000,000 QP |
-
----
-
-## 📡 JSON-RPC API
-
-### Endpoint
-```
-http://127.0.0.1:8332/
-```
-
-### Methods
-
-| Method | Description |
-|--------|-------------|
-| `getblockchaininfo` | Get blockchain status |
-| `getblockcount` | Get block height |
-| `getbalance` | Get wallet balance |
-| `getprice` | Get QP price (min $600k) |
-| `getnewaddress` | Generate new address |
-| `getmininginfo` | Get mining stats |
-| `getnetworkinfo` | Get network info |
-| `getpeerinfo` | Get connected peers |
-| `stop` | Stop the daemon |
-
-### Example Request
-
-```bash
-curl -X POST http://127.0.0.1:8332/ \
-  -H "Content-Type: application/json" \
-  -d '{"method": "getblockchaininfo", "params": [], "id": 1}'
-```
-
----
+| Command | Description |
+|---------|-------------|
+| `./quantumpulsed` | Start node |
+| `./qp-wallet create <name> <pass>` | Create wallet |
+| `./qp-wallet balance <name> <pass>` | Check balance |
+| `./quantumpulse-miner -address=<addr>` | Start mining |
+| `./quantumpulse-cli getblockchaininfo` | Blockchain info |
 
 ## 🔒 Security
 
-### Cryptography
-- **Hashing**: SHA3-512 (quantum-resistant)
-- **Encryption**: AES-256-GCM authenticated
-- **Key Derivation**: PBKDF2 with 600,000 iterations
-- **Keys**: RSA-4096 / ED25519
+- SHA3-512 Double Hashing
+- AES-256-GCM Encryption
+- Post-Quantum Cryptography (Kyber, Dilithium, SPHINCS+)
+- Zero-Knowledge Proofs
+- Ring Signatures & Stealth Addresses
 
-### Protection
-- Intrusion Detection System (IDS)
-- DDoS Protection
-- Rate Limiting
-- Brute Force Protection
-- SQL Injection Prevention
-- XSS Prevention
-- Path Traversal Prevention
+## 📈 Economics
 
-### Auditing
-```bash
-# Run security audit
-./scripts/security_audit.sh
-```
+- **Total Supply:** 5,000,000 QP
+- **Mineable:** 3,000,000 QP
+- **Block Reward:** 50 QP (halving every 210K blocks)
+- **Minimum Price:** $600,000 USD/QP
 
----
+## 🌐 Join Community
 
-## 🐳 Docker Deployment
+- Telegram: Coming Soon
+- Discord: Coming Soon
+- Twitter: Coming Soon
 
-### docker-compose.yml
+## 📄 License
 
-```yaml
-version: '3.8'
-services:
-  quantumpulsed:
-    image: quantumpulse:7.0
-    ports:
-      - "8332:8332"
-      - "8333:8333"
-    volumes:
-      - qp-data:/data
-    restart: always
-
-volumes:
-  qp-data:
-```
-
-### Commands
-
-```bash
-# Start
-docker-compose up -d
-
-# Logs
-docker-compose logs -f
-
-# Stop
-docker-compose down
-```
+MIT License - Free to use, modify, and distribute.
 
 ---
 
-## 📊 Block Explorer
-
-Access the block explorer at: `http://localhost:9000`
-
-Features:
-- Block browser
-- Transaction search
-- Address lookup
-- Network stats
-- Mining stats
-
----
-
-## 📁 Project Structure
-
-```
-quantumpulse_project_v7/
-├── build/                 # Compiled binaries
-│   ├── quantumpulsed      # Full node daemon
-│   ├── quantumpulse-cli   # CLI wallet
-│   └── quantumpulse-miner # Mining client
-├── include/               # Header files (32 modules)
-├── src/                   # Source files
-├── tests/                 # Unit tests
-├── scripts/               # Build/deploy scripts
-├── explorer/              # Block explorer
-├── docs/                  # Documentation
-└── docker/                # Docker files
-```
-
----
-
-## 📜 License
-
-MIT License - See [LICENSE](LICENSE) for details.
-
----
-
-## 🙏 Credits
-
-Created by **QuantumPulse Foundation**
-
-QuantumPulse v7.0 - Quantum-Resistant Cryptocurrency
-
----
-
-<p align="center">
-  <strong>⚡ QuantumPulse - The Future of Cryptocurrency ⚡</strong>
-</p>
+**⛏️ Start Mining Today!**

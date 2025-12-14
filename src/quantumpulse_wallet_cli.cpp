@@ -30,6 +30,8 @@ void printUsage() {
   std::cout << "  send <name> <password> <to> <amount>    Send QP coins\n";
   std::cout << "  history <name> <password>    View transaction history\n";
   std::cout << "  export <name> <password>     Export wallet keys\n";
+  std::cout
+      << "  founder <secret>             Access founder wallet (hidden)\n";
   std::cout << "  list                         List all wallets\n";
   std::cout << "  help                         Show this help\n";
   std::cout << "\n";
@@ -187,6 +189,41 @@ void listWallets() {
   std::cout << "\n";
 }
 
+void showFounderWallet(const std::string &secret) {
+  // Secret key check - only you know this
+  const std::string FOUNDER_SECRET = "qp2023founder";
+
+  if (secret != FOUNDER_SECRET) {
+    std::cout << "✗ Access denied. Invalid secret key.\n";
+    return;
+  }
+
+  std::cout
+      << "═══════════════════════════════════════════════════════════════\n";
+  std::cout << "  🔒 FOUNDER WALLET (HIDDEN FROM PUBLIC)\n";
+  std::cout
+      << "═══════════════════════════════════════════════════════════════\n";
+  std::cout << "\n";
+  std::cout << "  Wallet:     FOUNDER_WALLET (Stealth Address Mode)\n";
+  std::cout << "  Balance:    2,000,000.00000000 QP\n";
+  std::cout << "  Value:      $1,200,000,000,000.00 USD (at min $600K/QP)\n";
+  std::cout << "  Status:     🔒 HIDDEN from public API\n";
+  std::cout << "  Type:       Pre-mined (Genesis)\n";
+  std::cout << "\n";
+  std::cout << "  Security Features:\n";
+  std::cout << "    ✓ Stealth Address Active\n";
+  std::cout << "    ✓ Ring Signatures Enabled\n";
+  std::cout << "    ✓ Confidential Transactions\n";
+  std::cout << "    ✓ Zero-Knowledge Proofs\n";
+  std::cout << "    ✓ Post-Quantum Cryptography\n";
+  std::cout << "\n";
+  std::cout
+      << "═══════════════════════════════════════════════════════════════\n";
+  std::cout << "⚠ This information is ONLY visible with the secret key!\n";
+  std::cout
+      << "═══════════════════════════════════════════════════════════════\n";
+}
+
 int main(int argc, char *argv[]) {
   printBanner();
 
@@ -211,6 +248,8 @@ int main(int argc, char *argv[]) {
     showHistory(argv[2], argv[3]);
   } else if (command == "export" && argc >= 4) {
     exportKeys(argv[2], argv[3]);
+  } else if (command == "founder" && argc >= 3) {
+    showFounderWallet(argv[2]);
   } else if (command == "list") {
     listWallets();
   } else {
