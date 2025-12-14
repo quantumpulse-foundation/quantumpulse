@@ -5,7 +5,7 @@
 #include "quantumpulse_logging_v7.h"
 #include <algorithm>
 #include <map>
-#include <memory>
+
 #include <mutex>
 #include <optional>
 #include <random>
@@ -182,10 +182,10 @@ public:
   }
 
   // Verify ring signature
-  bool verifyRingSignature(const std::string &signature,
-                           const std::string &message,
-                           const std::vector<std::string> &ringMembers,
-                           int shardId) {
+  bool verifyRingSignature(
+      const std::string &signature, [[maybe_unused]] const std::string &message,
+      [[maybe_unused]] const std::vector<std::string> &ringMembers,
+      int shardId) {
     std::lock_guard<std::mutex> lock(mutex_);
 
     if (signature.find("ring_sig_v11_") != 0) {
@@ -211,7 +211,7 @@ public:
   // Get decoy outputs for ring
   std::vector<std::string>
   selectDecoys(const std::vector<std::string> &allOutputs,
-               const std::string &realOutput, int shardId) {
+               const std::string &realOutput, [[maybe_unused]] int shardId) {
     std::lock_guard<std::mutex> lock(mutex_);
 
     std::vector<std::string> decoys;
@@ -281,7 +281,8 @@ public:
   }
 
   // Verify Bulletproof
-  bool verifyBulletproof(const std::string &proof, int shardId) {
+  bool verifyBulletproof(const std::string &proof,
+                         [[maybe_unused]] int shardId) {
     std::lock_guard<std::mutex> lock(mutex_);
 
     if (proof.find("bp_v11_") != 0) {
@@ -308,9 +309,10 @@ public:
   }
 
   // Decrypt amount (recipient only)
-  std::optional<double> decryptAmount(const std::string &encryptedAmount,
-                                      const std::string &privateViewKey,
-                                      int shardId) {
+  std::optional<double>
+  decryptAmount(const std::string &encryptedAmount,
+                [[maybe_unused]] const std::string &privateViewKey,
+                [[maybe_unused]] int shardId) {
     std::lock_guard<std::mutex> lock(mutex_);
 
     // Simulated decryption

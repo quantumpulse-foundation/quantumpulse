@@ -2,9 +2,8 @@
 #define QUANTUMPULSE_PQCRYPTO_V7_H
 
 #include "quantumpulse_logging_v7.h"
-#include <array>
 #include <cstdint>
-#include <memory>
+
 #include <mutex>
 #include <optional>
 #include <random>
@@ -327,8 +326,9 @@ public:
 
   // Verify SPHINCS+ signature
   bool verify(const std::vector<uint8_t> &signature,
-              const std::vector<uint8_t> &message,
-              const std::vector<uint8_t> &publicKey, int shardId) {
+              [[maybe_unused]] const std::vector<uint8_t> &message,
+              const std::vector<uint8_t> &publicKey,
+              [[maybe_unused]] int shardId) {
     std::lock_guard<std::mutex> lock(mutex_);
 
     if (signature.size() != SPHINCS_SIGNATURE_SIZE ||
