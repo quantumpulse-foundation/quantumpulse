@@ -1,275 +1,166 @@
-# QuantumPulse Whitepaper v7.0
-
-<p align="center">
-<strong>A Quantum-Resistant Cryptocurrency with Military-Grade Security</strong>
-</p>
-
-<p align="center">
-<em>QuantumPulse Foundation</em><br>
-December 2024
-</p>
-
----
+# QuantumPulse Whitepaper v1.0
 
 ## Abstract
 
-QuantumPulse (QP) is a next-generation cryptocurrency designed to withstand quantum computing attacks while providing military-grade security for digital transactions. Unlike traditional cryptocurrencies, QuantumPulse implements a guaranteed minimum price floor of $600,000 USD per coin, ensuring long-term value stability. With a total supply of 5 million coins (2 million pre-mined, 3 million minable), QuantumPulse represents a new paradigm in digital asset design.
+QuantumPulse (QP) is a next-generation cryptocurrency designed to withstand attacks from quantum computers while maintaining the decentralized, trustless nature of Bitcoin. With a guaranteed minimum price floor of $600,000 USD per coin and advanced privacy features, QuantumPulse represents the future of secure digital money.
 
 ---
 
 ## 1. Introduction
 
 ### 1.1 The Quantum Threat
-Current cryptocurrencies rely on cryptographic algorithms (ECDSA, SHA-256) that are vulnerable to quantum computers using Shor's and Grover's algorithms. QuantumPulse addresses this threat by implementing SHA3-512 based hashing and post-quantum cryptographic primitives.
 
-### 1.2 Price Volatility Problem
-Traditional cryptocurrencies suffer from extreme price volatility. QuantumPulse solves this by implementing a protocol-level minimum price floor of $600,000 USD per coin.
+Current cryptocurrencies like Bitcoin use ECDSA (Elliptic Curve Digital Signature Algorithm), which is vulnerable to Shor's algorithm on quantum computers. As quantum computing advances, the security of existing cryptocurrencies becomes increasingly threatened.
 
-### 1.3 Vision
-To create a secure, stable, and quantum-resistant digital currency that preserves wealth across generations.
+### 1.2 Our Solution
+
+QuantumPulse implements post-quantum cryptography (PQC) algorithms that are resistant to both classical and quantum attacks:
+
+- **Kyber** - Key encapsulation
+- **Dilithium** - Digital signatures
+- **SPHINCS+** - Hash-based signatures
 
 ---
 
-## 2. Technical Architecture
+## 2. Technical Specifications
 
-### 2.1 Core Components
-
-| Component | Technology |
-|-----------|------------|
-| Hashing | Double SHA3-512 |
+| Parameter | Value |
+|-----------|-------|
+| Algorithm | SHA3-512 (Double Hash) |
+| Block Time | ~10 minutes |
+| Initial Block Reward | 50 QP |
+| Halving Interval | 210,000 blocks |
+| Total Supply | 5,000,000 QP |
+| Mineable Supply | 3,000,000 QP |
+| Minimum Price | $600,000 USD |
 | Encryption | AES-256-GCM |
 | Key Derivation | PBKDF2 (600K iterations) |
-| Signatures | ED25519 + RSA-4096 |
-| Consensus | Proof of Work (PoW) |
-
-### 2.2 Network Architecture
-
-```
-┌─────────────────────────────────────────────────┐
-│                 QuantumPulse Network             │
-├─────────────────────────────────────────────────┤
-│  ┌─────────┐  ┌─────────┐  ┌─────────┐         │
-│  │  Node   │──│  Node   │──│  Node   │   ...   │
-│  │ (8333)  │  │ (8333)  │  │ (8333)  │         │
-│  └────┬────┘  └────┬────┘  └────┬────┘         │
-│       │            │            │               │
-│  ┌────┴────────────┴────────────┴────┐         │
-│  │         P2P Mesh Network          │         │
-│  └───────────────────────────────────┘         │
-└─────────────────────────────────────────────────┘
-```
-
-### 2.3 Block Structure
-
-```
-Block Header:
-├── Version: 7
-├── Previous Block Hash (SHA3-512)
-├── Merkle Root
-├── Timestamp
-├── Difficulty Target
-├── Nonce
-└── Miner Address
-
-Block Body:
-├── Transaction Count
-└── Transactions[]
-    ├── From Address
-    ├── To Address
-    ├── Amount
-    ├── Fee
-    ├── Signature
-    └── ZK Proof (optional)
-```
 
 ---
 
-## 3. Tokenomics
+## 3. Consensus Mechanism
 
-### 3.1 Supply Distribution
+QuantumPulse uses Proof of Work (PoW) with SHA3-512 double hashing:
+
+```
+Hash = SHA3-512(SHA3-512(BlockHeader + Nonce))
+```
+
+This provides:
+- Quantum resistance (SHA3 is considered post-quantum secure)
+- ASIC resistance (memory-hard)
+- Fair distribution via mining
+
+---
+
+## 4. Privacy Features
+
+### 4.1 Stealth Addresses
+One-time addresses generated for each transaction, preventing address linking.
+
+### 4.2 Ring Signatures
+Transactions are signed by a group, hiding the actual sender.
+
+### 4.3 Confidential Transactions
+Transaction amounts are encrypted, visible only to sender and receiver.
+
+### 4.4 Zero-Knowledge Proofs
+Prove transaction validity without revealing transaction details.
+
+---
+
+## 5. Economics
+
+### 5.1 Supply Distribution
 
 | Category | Amount | Percentage |
 |----------|--------|------------|
-| Pre-mined (Founder) | 2,000,000 QP | 40% |
-| Minable | 3,000,000 QP | 60% |
-| **Total Supply** | **5,000,000 QP** | **100%** |
+| Mineable | 3,000,000 QP | 60% |
+| Foundation | 2,000,000 QP | 40% |
+| **Total** | **5,000,000 QP** | **100%** |
 
-### 3.2 Mining Rewards
+### 5.2 Price Floor Mechanism
 
-| Block Range | Reward | Era |
-|-------------|--------|-----|
-| 1 - 210,000 | 50 QP | Genesis |
-| 210,001 - 420,000 | 25 QP | First Halving |
-| 420,001 - 630,000 | 12.5 QP | Second Halving |
-| 630,001+ | 6.25 QP | Third Halving |
+QuantumPulse implements a protocol-level minimum price of $600,000 USD per coin. Transactions below this price are rejected by the network.
 
-### 3.3 Price Floor Mechanism
+### 5.3 Halving Schedule
 
-QuantumPulse implements a protocol-level minimum price floor:
-
-- **Minimum Price**: $600,000 USD per QP
-- **Enforcement**: All transactions below minimum price are rejected
-- **Audit**: Continuous monitoring by smart contracts
+| Era | Blocks | Reward | Total Mined |
+|-----|--------|--------|-------------|
+| 1 | 0 - 209,999 | 50 QP | 10.5M |
+| 2 | 210K - 419,999 | 25 QP | 15.75M |
+| 3 | 420K - 629,999 | 12.5 QP | 18.375M |
+| ... | ... | ... | ... |
 
 ---
 
-## 4. Consensus Mechanism
+## 6. Security
 
-### 4.1 Proof of Work (PoW)
+### 6.1 Cryptographic Stack
 
-QuantumPulse uses Double SHA3-512 hashing:
+- **Hashing:** SHA3-512
+- **Encryption:** AES-256-GCM
+- **Signatures:** Dilithium + SPHINCS+
+- **Key Exchange:** Kyber
 
-```
-BlockHash = SHA3-512(SHA3-512(BlockHeader))
-```
+### 6.2 AI Security
 
-### 4.2 Difficulty Adjustment
-
-- **Target Block Time**: 10 minutes
-- **Adjustment Period**: Every 10 blocks
-- **Algorithm**: Linear adjustment based on actual vs target time
-
-### 4.3 Mining Algorithm
-
-```cpp
-while (true) {
-    hash = DoubleSHA3_512(blockHeader + nonce);
-    if (hash.startsWith("0".repeat(difficulty))) {
-        broadcastBlock(block);
-        break;
-    }
-    nonce++;
-}
-```
-
----
-
-## 5. Security Features
-
-### 5.1 Cryptographic Security
-
-| Feature | Implementation |
-|---------|----------------|
-| Quantum Resistance | SHA3-512 (NIST approved) |
-| Encryption | AES-256-GCM (authenticated) |
-| Key Derivation | PBKDF2 with 600K iterations |
-| Memory Safety | Secure wipe (DoD 5220.22-M) |
-
-### 5.2 Network Security
-
-- **DDoS Protection**: Rate limiting, SYN flood detection
-- **Intrusion Detection**: SQL injection, XSS, Path Traversal prevention
-- **Firewall**: Built-in rule engine
-- **TLS**: All RPC communications encrypted
-
-### 5.3 Multi-Signature Support
-
-QuantumPulse supports M-of-N multi-signature transactions:
-
-```
-Required Signatures: M
-Total Signers: N
-Threshold: M ≤ N
-```
-
----
-
-## 6. Smart Features
-
-### 6.1 Sharding
-
-- 16 active shards for parallel processing
-- Cross-shard transaction support
-- Automatic load balancing
-
-### 6.2 Zero-Knowledge Proofs
-
-Optional ZK proofs for private transactions without revealing:
-- Sender address
-- Receiver address
-- Transaction amount
-
-### 6.3 AI Integration
-
-- **Bug Detection**: Neural network-based code analysis
-- **Anomaly Detection**: Real-time transaction monitoring
-- **Self-Healing**: Automatic issue resolution
+QuantumPulse includes AI-powered security features:
+- Automatic bug detection
+- Self-healing code
+- Threat classification
+- Anomaly detection
 
 ---
 
 ## 7. Roadmap
 
-### Phase 1: Genesis (Complete ✓)
-- Core blockchain implementation
-- Mining client
-- CLI wallet
-- Block explorer
-
-### Phase 2: Growth (Q1 2025)
-- Exchange listings
-- Mobile wallet
-- DeFi integration
-- Staking protocol
-
-### Phase 3: Expansion (Q2 2025)
-- Lightning network
-- Cross-chain bridges
-- NFT marketplace
-- DAO governance
-
-### Phase 4: Enterprise (Q3 2025)
-- Enterprise solutions
-- Payment gateway integrations
-- Regulatory compliance
-- Global adoption
+| Phase | Timeline | Milestone |
+|-------|----------|-----------|
+| 1 | Q4 2024 | Mainnet Launch ✅ |
+| 2 | Q1 2025 | Mobile Wallet |
+| 3 | Q2 2025 | DEX Listing |
+| 4 | Q3 2025 | CEX Listing |
+| 5 | Q4 2025 | Hardware Wallet Support |
 
 ---
 
-## 8. Use Cases
+## 8. Getting Started
 
-### 8.1 Store of Value
-With a guaranteed minimum price of $600,000 USD, QuantumPulse serves as a reliable store of wealth.
+### Installation
+```bash
+curl -sSL https://raw.githubusercontent.com/quantumpulse-foundation/quantumpulse/main/install.sh | bash
+```
 
-### 8.2 Institutional Investment
-Military-grade security makes QP suitable for institutional investors and corporations.
+### Create Wallet
+```bash
+./qp-wallet create mywallet mypassword
+```
 
-### 8.3 Cross-Border Payments
-Fast, secure transactions for international payments.
-
-### 8.4 Smart Contracts
-Support for programmable transactions and decentralized applications.
-
----
-
-## 9. Comparison
-
-| Feature | Bitcoin | Ethereum | QuantumPulse |
-|---------|---------|----------|--------------|
-| Quantum Resistant | ❌ | ❌ | ✅ |
-| Price Floor | ❌ | ❌ | ✅ ($600K) |
-| Military Security | ❌ | ❌ | ✅ |
-| Multi-Signature | ✅ | ✅ | ✅ |
-| Smart Contracts | ❌ | ✅ | ✅ |
-| ZK Proofs | ❌ | ⚠️ | ✅ |
-| Sharding | ❌ | ⚠️ | ✅ |
+### Start Mining
+```bash
+./quantumpulse-miner -address=<your_address> -difficulty=4
+```
 
 ---
 
-## 10. Conclusion
+## 9. Conclusion
 
-QuantumPulse represents a significant advancement in cryptocurrency technology, combining quantum resistance, military-grade security, and economic stability. With its unique price floor mechanism and advanced features, QuantumPulse is positioned to become the premier digital asset for long-term wealth preservation.
-
----
-
-## References
-
-1. NIST. "SHA-3 Standard: Permutation-Based Hash and Extendable-Output Functions." FIPS 202, 2015.
-2. Shor, P. "Algorithms for Quantum Computation." FOCS, 1994.
-3. Grover, L. "A Fast Quantum Mechanical Algorithm for Database Search." STOC, 1996.
-4. OWASP. "Password Storage Cheat Sheet." 2024.
+QuantumPulse represents the next evolution in cryptocurrency technology. By combining quantum-resistant cryptography with advanced privacy features and a guaranteed price floor, we provide a secure, private, and valuable digital currency for the future.
 
 ---
 
-<p align="center">
-<strong>© 2024 QuantumPulse. All Rights Reserved.</strong>
-</p>
+## 10. References
+
+1. NIST Post-Quantum Cryptography Standardization
+2. SHA-3 Standard (FIPS 202)
+3. Bitcoin Whitepaper - Satoshi Nakamoto
+4. CryptoNote Protocol
+
+---
+
+**Website:** Coming Soon
+**GitHub:** https://github.com/quantumpulse-foundation/quantumpulse
+**Contact:** quantumpulse-foundation@proton.me
+
+© 2024 QuantumPulse Foundation
