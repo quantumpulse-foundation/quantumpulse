@@ -25,8 +25,7 @@
 |---------|-------------|
 | **Quantum-Resistant** | SHA3-512 + Post-quantum cryptography |
 | **Price Floor** | Minimum $600,000 USD per QP |
-| **Mining Limit** | 3,000,000 QP maximum supply |
-| **Pre-mined** | 2,000,000 QP in founder account |
+| **Total Coins** | 5,000,000 QP maximum supply |
 | **Difficulty** | Dynamic (starts at 6, increases) |
 | **Block Reward** | 50 QP per block |
 | **Military Security** | AES-256-GCM, PBKDF2 600K iterations |
