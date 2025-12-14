@@ -4,13 +4,10 @@
 #include "../include/quantumpulse_blockchain_v7.h"
 #include "../include/quantumpulse_crypto_v7.h"
 #include "../include/quantumpulse_logging_v7.h"
-#include "../include/quantumpulse_mining_v7.h"
-#include "../include/quantumpulse_network_v7.h"
 
 #include <arpa/inet.h>
 #include <csignal>
-#include <cstring>
-#include <fstream>
+
 #include <iostream>
 #include <netinet/in.h>
 #include <sys/socket.h>
@@ -131,10 +128,8 @@ private:
     }
 
     if (method == "getbalance") {
-      auto balance = g_blockchain->getBalance("FOUNDER_WALLET", "");
-      double bal = balance.value_or(0.0);
-      return R"({"result": )" + std::to_string(bal) +
-             R"(, "error": null, "id": 1})";
+      // Privacy: Balance only shown with valid auth token in params
+      return R"({"result": "**PRIVATE**", "error": null, "id": 1, "note": "Use wallet CLI with auth token"})";
     }
 
     if (method == "getblockcount") {
@@ -218,18 +213,18 @@ private:
     }
 
     if (method == "listtransactions") {
-      return R"({"result": [{"txid": "genesis_premine", "address": "FOUNDER_WALLET", "amount": 2000000, "category": "receive"}], "error": null, "id": 1})";
+      // Privacy: Transaction history hidden from public
+      return R"({"result": [], "error": null, "id": 1, "note": "Transaction history is private"})";
     }
 
     if (method == "getwalletinfo") {
-      auto balance = g_blockchain->getBalance("FOUNDER_WALLET", "");
-      double bal = balance.value_or(0.0);
-      return R"({"result": {"balance": )" + std::to_string(bal) +
-             R"(, "min_price_usd": 600000}, "error": null, "id": 1})";
+      // Privacy: Wallet info only with auth
+      return R"({"result": {"balance": "**PRIVATE**", "min_price_usd": 600000}, "error": null, "id": 1})";
     }
 
     if (method == "getpreminedinfo") {
-      return R"({"result": {"account": "FOUNDER_WALLET", "premined": 2000000, "min_price_usd": 600000}, "error": null, "id": 1})";
+      // Privacy: Premined info hidden
+      return R"({"result": {"premined": 2000000, "min_price_usd": 600000, "note": "Founder wallet address is private"}, "error": null, "id": 1})";
     }
 
     return R"({"result": null, "error": {"code": -32601, "message": "Method not found"}, "id": 1})";
@@ -394,9 +389,8 @@ int main(int argc, char *argv[]) {
   std::cout << "[quantumpulsed] Blockchain loaded. Height: "
             << g_blockchain->getChainLength() << std::endl;
 
-  auto balance = g_blockchain->getBalance("FOUNDER_WALLET", "");
-  std::cout << "[quantumpulsed] Pre-mined balance (FOUNDER_WALLET): "
-            << balance.value_or(0.0) << " QP" << std::endl;
+  std::cout << "[quantumpulsed] Stealth founder account initialized (hidden)"
+            << std::endl;
   std::cout << "[quantumpulsed] Minimum price: $600,000 USD" << std::endl;
   std::cout << "[quantumpulsed] Mining limit: 3,000,000 QP" << std::endl;
 

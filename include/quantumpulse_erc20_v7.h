@@ -1,6 +1,7 @@
 #ifndef QUANTUMPULSE_ERC20_V7_H
 #define QUANTUMPULSE_ERC20_V7_H
 
+#include "quantumpulse_crypto_v7.h"
 #include "quantumpulse_logging_v7.h"
 #include <map>
 #include <mutex>

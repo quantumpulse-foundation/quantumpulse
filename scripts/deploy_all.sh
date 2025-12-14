@@ -9,7 +9,7 @@ echo "║          QuantumPulse Deployment Script v7.0                 ║"
 echo "╚══════════════════════════════════════════════════════════════╝"
 echo ""
 
-PROJECT_DIR="/home/shankar/Desktop/quantumpulse_project_v7"
+PROJECT_DIR="${QP_PROJECT_DIR:-$(pwd)}"
 BUILD_DIR="$PROJECT_DIR/build"
 
 # Colors
@@ -65,7 +65,7 @@ echo "╚═══════════════════════�
 echo ""
 echo "To start mining:"
 echo "  cd $BUILD_DIR"
-echo "  ./quantumpulse-miner -address=Shankar-Lal-Khati -difficulty=4"
+echo "  ./quantumpulse-miner -address=YOUR_WALLET_ADDRESS -difficulty=4"
 echo ""
 echo "To stop all services:"
 echo "  pkill -f quantumpulsed"

@@ -157,13 +157,18 @@ TEST(BlockchainInit) {
   EXPECT_TRUE(bc.checkMiningLimit()); // Should be able to mine initially
 }
 
-// Test: Premined account balance
+// Test: Premined account privacy (balance hidden from public)
 TEST(PreminedAccountBalance) {
   QuantumPulse::Blockchain::Blockchain bc;
 
+  // FOUNDER_WALLET no longer exists - now uses stealth addresses
+  // Public queries should NOT reveal premined balance
   auto balance = bc.getBalance("FOUNDER_WALLET", "any_token");
-  EXPECT_TRUE(balance.has_value());
-  EXPECT_EQ(*balance, 2000000.0);
+  EXPECT_FALSE(balance.has_value()); // Should be hidden (privacy feature)
+
+  // Non-existent accounts should also return nullopt
+  auto randomBalance = bc.getBalance("random_address", "");
+  EXPECT_FALSE(randomBalance.has_value());
 }
 
 // Test: Block reward calculation

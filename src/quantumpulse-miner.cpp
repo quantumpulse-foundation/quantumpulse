@@ -2,7 +2,6 @@
 // Bitcoin-like standalone mining client with HIGH difficulty and HALVING
 
 #include "../include/quantumpulse_crypto_v7.h"
-#include "../include/quantumpulse_logging_v7.h"
 
 #include <atomic>
 #include <chrono>
@@ -333,9 +332,9 @@ int main(int argc, char *argv[]) {
     totalEarned += calculateBlockReward(i);
   }
 
-  std::cout << "\n" << std::string(60, '═') << std::endl;
+  std::cout << "\n" << std::string(60, '=') << std::endl;
   std::cout << "📊 FINAL MINING STATS" << std::endl;
-  std::cout << std::string(60, '═') << std::endl;
+  std::cout << std::string(60, '=') << std::endl;
   std::cout << "   Total Hashes:     " << g_totalHashes << std::endl;
   std::cout << "   Blocks Found:     " << g_blocksFound << std::endl;
   std::cout << "   Total Earned:     " << std::fixed << std::setprecision(8)
@@ -345,7 +344,7 @@ int main(int argc, char *argv[]) {
   std::cout << "   Final Difficulty: " << g_currentDifficulty << std::endl;
   std::cout << "   Min Price:        $" << MIN_PRICE << " USD (GUARANTEED!)"
             << std::endl;
-  std::cout << std::string(60, '═') << std::endl;
+  std::cout << std::string(60, '=') << std::endl;
   std::cout << "✅ Shutdown complete." << std::endl;
 
   return 0;

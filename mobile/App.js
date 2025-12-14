@@ -83,7 +83,7 @@ function DashboardScreen() {
 
 // Wallet Screen
 function WalletScreen() {
-    const [address] = useState('Shankar-Lal-Khati');
+    const [address] = useState('qp_stealth_' + Math.random().toString(36).substring(2, 15));
     const [balance] = useState(2000000);
     const [recipient, setRecipient] = useState('');
     const [amount, setAmount] = useState('');

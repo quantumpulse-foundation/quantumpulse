@@ -1,9 +1,7 @@
 // QuantumPulse Mobile Wallet (qp-wallet)
 // Cross-platform CLI wallet with mobile-friendly commands
 
-#include "../include/quantumpulse_blockchain_v7.h"
 #include "../include/quantumpulse_crypto_v7.h"
-#include "../include/quantumpulse_logging_v7.h"
 
 #include <fstream>
 #include <iomanip>

@@ -156,7 +156,10 @@ public:
   }
 
   // Get total staked
-  double getTotalStaked() const noexcept { return totalStaked_.load(); }
+  double getTotalStaked() const noexcept {
+    std::lock_guard<std::mutex> lock(mutex_);
+    return totalStaked_;
+  }
 
   // Get total stakers
   size_t getTotalStakers() const noexcept {
@@ -167,8 +170,8 @@ public:
 private:
   mutable std::mutex mutex_;
   std::map<std::string, Stake> stakes_;
-  std::atomic<double> totalStaked_{0.0};
-  std::atomic<int> stakeCounter_{0};
+  double totalStaked_{0.0};
+  int stakeCounter_{0};
 
   std::string generateStakeId() {
     return "STAKE_" + std::to_string(++stakeCounter_) + "_" +

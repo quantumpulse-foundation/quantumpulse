@@ -123,9 +123,9 @@ public:
 
 private:
   std::string root_;
-  Crypto::CryptoManager crypto_;
+  mutable Crypto::CryptoManager crypto_;
 
-  std::string sha3Hash(const std::string &data) {
+  std::string sha3Hash(const std::string &data) const {
     return crypto_.sha3_512_v11(data, 0);
   }
 };

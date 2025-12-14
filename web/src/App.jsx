@@ -453,7 +453,7 @@ function MiningPage({ info }) {
 function TransactionsPage() {
     const transactions = [
         { id: 'tx_001...', from: 'pub_v11_abc...', to: 'pub_v11_xyz...', amount: 100, status: 'confirmed', time: '2 min ago' },
-        { id: 'tx_002...', from: 'Shankar-Lal-Khati', to: 'pub_v11_def...', amount: 500, status: 'confirmed', time: '5 min ago' },
+        { id: 'tx_002...', from: 'QP_ANON_***...', to: 'pub_v11_def...', amount: '***', status: 'confirmed', time: '5 min ago' },
         { id: 'tx_003...', from: 'pub_v11_ghi...', to: 'pub_v11_jkl...', amount: 25, status: 'pending', time: 'Just now' },
     ]
 

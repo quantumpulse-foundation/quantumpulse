@@ -1,6 +1,6 @@
 FROM ubuntu:22.04
 
-LABEL maintainer="Shankar Lal Khati"
+LABEL maintainer="QuantumPulse Foundation"
 LABEL version="7.0"
 LABEL description="QuantumPulse - Quantum-Resistant Cryptocurrency"
 

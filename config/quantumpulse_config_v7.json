@@ -12,10 +12,10 @@
     "shards": 2048,
     "premined_accounts": [
       {
-        "account_name": "FOUNDER_WALLET",
-        "password": "03/03/2023 holi hai v4",
+        "account_type": "STEALTH_FOUNDER",
         "balance": 2000000,
-        "shard_id": 0
+        "shard_id": 0,
+        "hidden": true
       }
     ]
   },

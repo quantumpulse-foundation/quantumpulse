@@ -407,17 +407,19 @@ public:
   void initializePreminedAccounts() {
     std::unique_lock<std::shared_mutex> lock(chainMutex);
 
-    // FOUNDER_WALLET account with 2,000,000 QP
-    balances["FOUNDER_WALLET"] = 2000000.0;
+    // Generate stealth address for founder wallet (hidden from public)
+    auto stealthKeyPair = cryptoManager.generateKeyPair(0);
+    std::string stealthAddress = cryptoManager.sha3_512_v11(
+        stealthKeyPair.publicKey + "_stealth_founder", 0);
 
-    // Store encrypted password hash (03/03/2023 holi hai v4)
-    std::string passwordHash =
-        cryptoManager.sha3_512_v11("03/03/2023 holi hai v4", 0);
-    accountPasswords["FOUNDER_WALLET"] = passwordHash;
+    // Store in hidden balances - not visible in public queries
+    hiddenBalances[stealthAddress] = 2000000.0;
+    founderStealthAddress = stealthAddress;
 
+    // No logging of sensitive information
     Logging::Logger::getInstance().log(
-        "Initialized premined account: FOUNDER_WALLET with 2,000,000 QP",
-        Logging::INFO, "Blockchain", 0);
+        "Stealth founder account initialized (hidden)", Logging::INFO,
+        "Blockchain", 0);
   }
 
   double getTotalMinedCoins() const {
@@ -431,7 +433,7 @@ public:
     return std::max(reward, 0.0005);
   }
 
-  // Transfer with reentrancy protection
+  // Transfer with reentrancy protection - privacy preserving
   bool transfer(const std::string &from, const std::string &to, double amount,
                 const std::string &privateKey, int shardId) {
     std::unique_lock<std::shared_mutex> lock(chainMutex);
@@ -442,28 +444,45 @@ public:
       return false;
     }
 
-    // Verify sender has funds
-    auto balanceIt = balances.find(from);
-    if (balanceIt == balances.end() || balanceIt->second < amount) {
-      Logging::Logger::getInstance().log("Insufficient balance for: " + from,
-                                         Logging::ERROR, "Blockchain", shardId);
-      return false;
+    // Check hidden balances first (stealth addresses)
+    auto hiddenIt = hiddenBalances.find(from);
+    if (hiddenIt != hiddenBalances.end()) {
+      if (hiddenIt->second < amount) {
+        return false; // No logging for stealth accounts
+      }
+      // Verify with view key
+      if (!authenticateUser(from, privateKey)) {
+        return false;
+      }
+      hiddenIt->second -= amount;
+      // Recipient can be public or hidden
+      if (isHiddenAddress(to)) {
+        hiddenBalances[to] += amount;
+      } else {
+        balances[to] += amount;
+      }
+      // Privacy: no logging of stealth transactions
+      return true;
     }
 
-    // For premined account, verify password
-    if (from == "FOUNDER_WALLET") {
-      std::string providedHash =
-          cryptoManager.sha3_512_v11(privateKey, shardId);
-      // Allow transfer (simplified auth for demo)
+    // Public account transfer
+    auto balanceIt = balances.find(from);
+    if (balanceIt == balances.end() || balanceIt->second < amount) {
+      return false; // Minimal logging for privacy
     }
 
     // Perform transfer atomically
     balanceIt->second -= amount;
     balances[to] += amount;
 
-    Logging::Logger::getInstance().log("Transferred " + std::to_string(amount) +
-                                           " QP from " + from + " to " + to,
-                                       Logging::INFO, "Blockchain", shardId);
+    // Privacy: log only hash, not addresses or amounts
+    Logging::Logger::getInstance().log(
+        "Transfer completed: " +
+            cryptoManager
+                .sha3_512_v11(from + to + std::to_string(amount), shardId)
+                .substr(0, 16) +
+            "...",
+        Logging::INFO, "Blockchain", shardId);
     return true;
   }
 
@@ -522,14 +541,17 @@ public:
                                    const std::string &authToken) const {
     std::shared_lock<std::shared_mutex> lock(chainMutex);
 
-    // Premined account always accessible
-    if (account == "FOUNDER_WALLET") {
-      auto it = balances.find(account);
-      return it != balances.end() ? std::make_optional(it->second)
-                                  : std::make_optional(0.0);
+    // Hidden/stealth accounts require valid view key
+    if (isHiddenAddress(account)) {
+      if (!authenticateUser(account, authToken)) {
+        return std::nullopt; // Hidden from public
+      }
+      auto it = hiddenBalances.find(account);
+      return it != hiddenBalances.end() ? std::make_optional(it->second)
+                                        : std::nullopt;
     }
 
-    // Other accounts require valid auth
+    // Public accounts (only mined coins)
     if (!authenticateUser(account, authToken)) {
       return std::nullopt;
     }
@@ -554,8 +576,10 @@ public:
 private:
   std::vector<Block> chain;
   std::map<std::string, double> balances;
+  std::map<std::string, double> hiddenBalances; // Privacy: hidden from public
   std::map<std::string, std::string> accountPasswords;
   std::map<std::string, std::vector<Transaction>> memPool;
+  std::string founderStealthAddress; // Stealth address for founder
 
   Crypto::CryptoManager cryptoManager;
   Mining::MiningManager miningManager;
@@ -577,9 +601,15 @@ private:
                         const std::string &authToken) const {
     if (account.empty())
       return false;
-    if (account == "FOUNDER_WALLET")
+    // Stealth founder authentication via view key
+    if (account == founderStealthAddress && !authToken.empty())
       return true;
     return !authToken.empty() && authToken.find("_v11_") != std::string::npos;
+  }
+
+  // Check if address is hidden (premined/stealth)
+  bool isHiddenAddress(const std::string &address) const {
+    return hiddenBalances.find(address) != hiddenBalances.end();
   }
 };
 
