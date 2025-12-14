@@ -173,58 +173,82 @@ private:
 
     // Bitcoin-like sendtoaddress - Transfer QP to any wallet
     if (method == "sendtoaddress") {
-      auto paramsStart = request.find("\"params\"");
-      if (paramsStart != std::string::npos) {
-        auto bracketStart = request.find("[", paramsStart);
-        auto bracketEnd = request.find("]", bracketStart);
-        if (bracketStart != std::string::npos &&
-            bracketEnd != std::string::npos) {
-          std::string paramsStr =
-              request.substr(bracketStart + 1, bracketEnd - bracketStart - 1);
-          auto firstQuote = paramsStr.find("\"");
-          auto secondQuote = paramsStr.find("\"", firstQuote + 1);
-          std::string toAddress =
-              paramsStr.substr(firstQuote + 1, secondQuote - firstQuote - 1);
-          auto comma = paramsStr.find(",", secondQuote);
-          double amount = 0.0;
-          if (comma != std::string::npos) {
-            std::string amountStr = paramsStr.substr(comma + 1);
-            amountStr.erase(0, amountStr.find_first_not_of(" "));
-            amount = std::stod(amountStr);
+      try {
+        auto paramsStart = request.find("\"params\"");
+        if (paramsStart != std::string::npos) {
+          auto bracketStart = request.find("[", paramsStart);
+          auto bracketEnd = request.find("]", bracketStart);
+          if (bracketStart != std::string::npos &&
+              bracketEnd != std::string::npos) {
+            std::string paramsStr =
+                request.substr(bracketStart + 1, bracketEnd - bracketStart - 1);
+            auto firstQuote = paramsStr.find("\"");
+            auto secondQuote = paramsStr.find("\"", firstQuote + 1);
+            if (firstQuote == std::string::npos ||
+                secondQuote == std::string::npos) {
+              return R"({"result": null, "error": {"code": -1, "message": "Invalid parameters"}, "id": 1})";
+            }
+            std::string toAddress =
+                paramsStr.substr(firstQuote + 1, secondQuote - firstQuote - 1);
+
+            // Security: Validate address format (prevent injection)
+            if (toAddress.empty() || toAddress.length() > 128 ||
+                toAddress.find(';') != std::string::npos ||
+                toAddress.find('<') != std::string::npos ||
+                toAddress.find('>') != std::string::npos ||
+                toAddress.find("DROP") != std::string::npos ||
+                toAddress.find("SELECT") != std::string::npos) {
+              return R"({"result": null, "error": {"code": -5, "message": "Invalid address format"}, "id": 1})";
+            }
+
+            auto comma = paramsStr.find(",", secondQuote);
+            double amount = 0.0;
+            if (comma != std::string::npos) {
+              std::string amountStr = paramsStr.substr(comma + 1);
+              amountStr.erase(0, amountStr.find_first_not_of(" "));
+              size_t endPos = amountStr.find_first_not_of("0123456789.-");
+              if (endPos != std::string::npos) {
+                amountStr = amountStr.substr(0, endPos);
+              }
+              if (amountStr.empty()) {
+                return R"({"result": null, "error": {"code": -3, "message": "Invalid amount"}, "id": 1})";
+              }
+              amount = std::stod(amountStr);
+            }
+            // Security: Amount validation
+            if (amount <= 0 || amount > 5000000) {
+              return R"({"result": null, "error": {"code": -3, "message": "Invalid amount"}, "id": 1})";
+            }
+            Crypto::CryptoManager cm;
+            std::string txid =
+                cm.sha3_512_v11(toAddress + std::to_string(amount) +
+                                    std::to_string(std::time(nullptr)),
+                                0);
+            txid = txid.substr(0, 64);
+            double valueUSD = amount * 600000.0;
+            return R"({"result": {"txid": ")" + txid + R"(", "amount": )" +
+                   std::to_string(amount) + R"(, "to": ")" + toAddress +
+                   R"(", "fee": 0.0001, "value_usd": )" +
+                   std::to_string(valueUSD) +
+                   R"(, "min_price": 600000, "status": "sent"}, "error": null, "id": 1})";
           }
-          if (amount <= 0) {
-            return R"({"result": null, "error": {"code": -3, "message": "Invalid amount"}, "id": 1})";
-          }
-          Crypto::CryptoManager cm;
-          std::string txid =
-              cm.sha3_512_v11(toAddress + std::to_string(amount) +
-                                  std::to_string(std::time(nullptr)),
-                              0);
-          txid = txid.substr(0, 64);
-          double valueUSD = amount * 600000.0;
-          return R"({"result": {"txid": ")" + txid + R"(", "amount": )" +
-                 std::to_string(amount) + R"(, "to": ")" + toAddress +
-                 R"(", "fee": 0.0001, "value_usd": )" +
-                 std::to_string(valueUSD) +
-                 R"(, "min_price": 600000, "status": "sent"}, "error": null, "id": 1})";
         }
+      } catch (const std::exception &e) {
+        return R"({"result": null, "error": {"code": -1, "message": "Parse error"}, "id": 1})";
       }
       return R"({"result": null, "error": {"code": -1, "message": "Usage: sendtoaddress address amount"}, "id": 1})";
     }
 
     if (method == "listtransactions") {
-      // Privacy: Transaction history hidden from public
       return R"({"result": [], "error": null, "id": 1, "note": "Transaction history is private"})";
     }
 
     if (method == "getwalletinfo") {
-      // Privacy: Wallet info only with auth
       return R"({"result": {"balance": "**PRIVATE**", "min_price_usd": 600000}, "error": null, "id": 1})";
     }
 
     if (method == "getpreminedinfo") {
-      // Privacy: Premined info hidden
-      return R"({"result": {"premined": 2000000, "min_price_usd": 600000, "note": "Founder wallet address is private"}, "error": null, "id": 1})";
+      return R"({"result": {"premined": 2000000, "min_price_usd": 600000, "note": "Founder wallet is private"}, "error": null, "id": 1})";
     }
 
     return R"({"result": null, "error": {"code": -32601, "message": "Method not found"}, "id": 1})";
