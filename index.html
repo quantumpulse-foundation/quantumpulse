@@ -4,376 +4,514 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuantumPulse - The Future of Cryptocurrency</title>
-    <meta name="description" content="QuantumPulse - Revolutionary Quantum-Resistant Cryptocurrency">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    <title>QuantumPulse - Quantum-Resistant Cryptocurrency</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
     <style>
-        :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --secondary: #06b6d4;
-            --accent: #f43f5e;
-            --gold: #fbbf24;
-            --dark: #0f0f1a;
-            --darker: #080810;
-            --light: #f8fafc;
-            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            --gradient-main: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        html {
-            scroll-behavior: smooth;
+        :root {
+            --gold-rich: linear-gradient(135deg, #FFD700 0%, #FFA500 25%, #FF8C00 50%, #FFD700 75%, #FFEC8B 100%);
+            --purple-rich: linear-gradient(135deg, #9333EA 0%, #7C3AED 25%, #8B5CF6 50%, #A855F7 75%, #C084FC 100%);
+            --cyan-rich: linear-gradient(135deg, #06B6D4 0%, #0EA5E9 25%, #22D3EE 50%, #38BDF8 75%, #7DD3FC 100%);
+            --premium-dark: #050208;
+            --premium-card: rgba(255, 255, 255, 0.02);
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background: var(--darker);
-            color: var(--light);
-            line-height: 1.6;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--premium-dark);
+            color: #fff;
+            min-height: 100vh;
             overflow-x: hidden;
         }
 
-        /* Animated Background */
-        .bg-animation {
+        /* Coin Background with 3-second Reveal Animation */
+        .coin-background {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70vmin;
+            height: 70vmin;
+            max-width: 600px;
+            max-height: 600px;
+            background-image: url('coin_background.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            z-index: 0;
+            opacity: 0;
+            animation: coinReveal 3s ease-out forwards;
+            /* Blend outer edges with background */
+            -webkit-mask-image: radial-gradient(circle, black 40%, transparent 70%);
+            mask-image: radial-gradient(circle, black 40%, transparent 70%);
+        }
+
+        @keyframes coinReveal {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.5) rotate(-30deg);
+                filter: blur(30px) brightness(0.3);
+            }
+
+            30% {
+                opacity: 0.5;
+                transform: translate(-50%, -50%) scale(0.8) rotate(-10deg);
+                filter: blur(15px) brightness(0.6);
+            }
+
+            60% {
+                opacity: 0.8;
+                transform: translate(-50%, -50%) scale(1) rotate(5deg);
+                filter: blur(5px) brightness(0.9);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1) rotate(0deg);
+                filter: blur(0px) brightness(1);
+            }
+        }
+
+        /* Ultra Premium Animated Background */
+        .premium-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
-            background: var(--darker);
-        }
-
-        .bg-animation::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            z-index: -2;
             background:
-                radial-gradient(ellipse at 20% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(6, 182, 212, 0.1) 0%, transparent 70%);
-            animation: pulse-bg 8s ease-in-out infinite alternate;
+                radial-gradient(ellipse 80% 50% at 20% 40%, rgba(147, 51, 234, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse 60% 40% at 80% 20%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse 50% 30% at 40% 80%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse 40% 40% at 70% 60%, rgba(236, 72, 153, 0.1) 0%, transparent 50%),
+                linear-gradient(180deg, #050208 0%, #0a0415 30%, #0f0520 60%, #050208 100%);
         }
 
-        @keyframes pulse-bg {
-            0% {
-                opacity: 0.5;
-                transform: scale(1);
-            }
-
-            100% {
-                opacity: 1;
-                transform: scale(1.1);
-            }
-        }
-
-        /* Floating Orbs */
+        /* Floating Premium Orbs */
         .orb {
-            position: fixed;
+            position: absolute;
             border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.4;
-            animation: float 20s ease-in-out infinite;
+            filter: blur(100px);
+            animation: orbFloat 25s ease-in-out infinite;
+            mix-blend-mode: screen;
         }
 
-        .orb-1 {
-            width: 600px;
-            height: 600px;
-            background: var(--primary);
-            top: -200px;
-            left: -200px;
-        }
-
-        .orb-2 {
+        .orb-gold {
             width: 500px;
             height: 500px;
-            background: var(--secondary);
-            bottom: -200px;
-            right: -200px;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.4), rgba(255, 140, 0, 0.2), transparent);
+            top: 5%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .orb-purple {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(147, 51, 234, 0.4), rgba(124, 58, 237, 0.2), transparent);
+            top: 30%;
+            right: -10%;
             animation-delay: -5s;
         }
 
-        .orb-3 {
+        .orb-cyan {
             width: 400px;
             height: 400px;
-            background: #d946ef;
-            top: 50%;
-            left: 50%;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.4), rgba(14, 165, 233, 0.2), transparent);
+            bottom: 10%;
+            left: 20%;
             animation-delay: -10s;
         }
 
-        @keyframes float {
+        .orb-pink {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.3), rgba(219, 39, 119, 0.15), transparent);
+            top: 60%;
+            left: 60%;
+            animation-delay: -15s;
+        }
+
+        @keyframes orbFloat {
 
             0%,
             100% {
-                transform: translate(0, 0) rotate(0deg);
+                transform: translate(0, 0) scale(1) rotate(0deg);
+                opacity: 0.8;
             }
 
             25% {
-                transform: translate(50px, -50px) rotate(5deg);
+                transform: translate(50px, -50px) scale(1.15) rotate(5deg);
+                opacity: 1;
             }
 
             50% {
-                transform: translate(-30px, 30px) rotate(-5deg);
+                transform: translate(-30px, 30px) scale(0.9) rotate(-5deg);
+                opacity: 0.9;
             }
 
             75% {
-                transform: translate(30px, 50px) rotate(3deg);
+                transform: translate(40px, 20px) scale(1.1) rotate(3deg);
+                opacity: 1;
             }
         }
 
-        /* Header */
+        /* Sparkle Effect */
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #fff;
+            border-radius: 50%;
+            animation: sparkle 3s ease-in-out infinite;
+            box-shadow: 0 0 10px #fff, 0 0 20px #FFD700;
+        }
+
+        @keyframes sparkle {
+
+            0%,
+            100% {
+                opacity: 0;
+                transform: scale(0);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Premium Glass Header */
         header {
+            padding: 20px 0;
             position: fixed;
-            top: 0;
             width: 100%;
-            padding: 20px 60px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            top: 0;
+            background: rgba(5, 2, 8, 0.7);
+            backdrop-filter: blur(30px) saturate(180%);
             z-index: 1000;
-            background: rgba(8, 8, 16, 0.8);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .logo {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 28px;
-            font-weight: 700;
-            background: var(--gradient-main);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--gradient-main);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            -webkit-text-fill-color: white;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.1);
         }
 
         nav {
             display: flex;
-            gap: 40px;
+            justify-content: space-between;
             align-items: center;
         }
 
-        nav a {
+        .logo {
+            font-size: 1.8em;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-text {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 30%, #22D3EE 60%, #A855F7 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #FFD700, #FF8C00, #9333EA);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3em;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+            animation: iconGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes iconGlow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 50px rgba(255, 215, 0, 0.7), 0 0 80px rgba(147, 51, 234, 0.3);
+            }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 35px;
+        }
+
+        .nav-links a {
             color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
-            font-size: 15px;
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 0.95em;
             transition: all 0.3s;
             position: relative;
+            padding: 5px 0;
         }
 
-        nav a:hover {
-            color: #fff;
-        }
-
-        nav a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--gradient-main);
-            transition: width 0.3s;
-        }
-
-        nav a:hover::after {
-            width: 100%;
-        }
-
-        .nav-btn {
-            padding: 12px 28px;
-            background: var(--gradient-main);
-            border-radius: 30px;
-            font-weight: 600;
-            color: #fff !important;
-        }
-
-        .nav-btn::after {
-            display: none;
+        .nav-links a:hover {
+            color: #FFD700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
         }
 
         /* Hero Section */
         .hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            padding: 200px 0 150px;
             text-align: center;
-            padding: 150px 20px 100px;
             position: relative;
+        }
+
+        .hero-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+            pointer-events: none;
         }
 
         .hero-badge {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px 20px;
-            background: rgba(99, 102, 241, 0.1);
-            border: 1px solid rgba(99, 102, 241, 0.3);
+            gap: 10px;
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.3), rgba(6, 182, 212, 0.2));
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            padding: 12px 28px;
             border-radius: 50px;
-            font-size: 14px;
-            color: #a5b4fc;
-            margin-bottom: 30px;
-            animation: fadeInUp 0.8s ease;
+            font-size: 0.9em;
+            font-weight: 600;
+            color: #FFD700;
+            margin-bottom: 40px;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.15);
+            animation: badgePulse 4s ease-in-out infinite;
         }
 
-        .hero-badge::before {
-            content: '✨';
+        @keyframes badgePulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 40px rgba(255, 215, 0, 0.15);
+            }
+
+            50% {
+                box-shadow: 0 0 60px rgba(255, 215, 0, 0.3);
+            }
         }
 
         .hero h1 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(48px, 8vw, 100px);
-            font-weight: 800;
-            line-height: 1.1;
+            font-size: 5em;
+            font-weight: 900;
             margin-bottom: 30px;
-            animation: fadeInUp 0.8s ease 0.1s backwards;
-        }
-
-        .hero h1 span {
-            background: var(--gradient-main);
+            line-height: 1.05;
+            background: linear-gradient(135deg, #FFFFFF 0%, #FFD700 20%, #FFA500 40%, #22D3EE 60%, #A855F7 80%, #EC4899 100%);
+            background-size: 200% 200%;
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
+            animation: heroGradient 8s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.2));
+        }
+
+        @keyframes heroGradient {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
         }
 
         .hero p {
-            font-size: 20px;
+            font-size: 1.4em;
             color: rgba(255, 255, 255, 0.6);
-            max-width: 600px;
-            margin-bottom: 50px;
-            animation: fadeInUp 0.8s ease 0.2s backwards;
+            margin-bottom: 60px;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
         }
 
-        .hero-buttons {
+        /* Ultra Premium Price Tag */
+        .price-showcase {
+            display: inline-block;
+            position: relative;
+            margin-bottom: 60px;
+        }
+
+        .price-label {
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #9333EA, #EC4899, #F43F5E);
+            padding: 8px 25px;
+            border-radius: 25px;
+            font-size: 0.85em;
+            font-weight: 700;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            box-shadow: 0 10px 30px rgba(147, 51, 234, 0.4);
+            z-index: 10;
+        }
+
+        .price-tag {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 20%, #FF8C00 40%, #FFD700 60%, #FFEC8B 80%, #FFD700 100%);
+            background-size: 200% 200%;
+            padding: 35px 80px;
+            border-radius: 25px;
+            font-size: 3em;
+            font-weight: 900;
+            color: #000;
+            box-shadow:
+                0 0 80px rgba(255, 215, 0, 0.5),
+                0 0 150px rgba(255, 215, 0, 0.3),
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                inset 0 3px 0 rgba(255, 255, 255, 0.5),
+                inset 0 -3px 0 rgba(0, 0, 0, 0.1);
+            animation: priceShine 3s ease-in-out infinite;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes priceShine {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+                box-shadow: 0 0 80px rgba(255, 215, 0, 0.5), 0 0 150px rgba(255, 215, 0, 0.3), 0 20px 60px rgba(0, 0, 0, 0.5);
+            }
+
+            50% {
+                background-position: 100% 50%;
+                box-shadow: 0 0 120px rgba(255, 215, 0, 0.7), 0 0 200px rgba(255, 215, 0, 0.4), 0 25px 80px rgba(0, 0, 0, 0.5);
+            }
+        }
+
+        /* Premium Buttons */
+        .cta-buttons {
             display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
             justify-content: center;
-            animation: fadeInUp 0.8s ease 0.3s backwards;
+            gap: 25px;
+            flex-wrap: wrap;
         }
 
         .btn {
-            padding: 18px 40px;
-            font-size: 16px;
-            font-weight: 600;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            text-decoration: none;
-            transition: all 0.3s;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            padding: 20px 45px;
+            border-radius: 18px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.15em;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
         }
 
         .btn-primary {
-            background: var(--gradient-main);
+            background: linear-gradient(135deg, #9333EA 0%, #7C3AED 50%, #6D28D9 100%);
             color: #fff;
-            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 15px 50px rgba(147, 51, 234, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
         }
 
         .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 50px rgba(99, 102, 241, 0.5);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 70px rgba(147, 51, 234, 0.6);
         }
 
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.05);
-            color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(6, 182, 212, 0.5);
+            color: #22D3EE;
             backdrop-filter: blur(10px);
         }
 
         .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-3px);
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            background: rgba(6, 182, 212, 0.15);
+            border-color: #22D3EE;
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(6, 182, 212, 0.3);
         }
 
         /* Features Section */
         .features {
-            padding: 120px 60px;
-            position: relative;
+            padding: 150px 0;
         }
 
         .section-header {
             text-align: center;
-            margin-bottom: 80px;
+            margin-bottom: 100px;
         }
 
         .section-header h2 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 48px;
-            font-weight: 700;
+            font-size: 3.5em;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFFFFF 0%, #FFD700 50%, #22D3EE 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin-bottom: 20px;
         }
 
         .section-header p {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 18px;
-            max-width: 600px;
-            margin: 0 auto;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1.3em;
         }
 
         .feature-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-            max-width: 1400px;
-            margin: 0 auto;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 35px;
         }
 
         .feature-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 24px;
-            padding: 40px;
-            transition: all 0.4s;
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.08), rgba(6, 182, 212, 0.05), rgba(255, 215, 0, 0.03));
+            border: 1px solid rgba(255, 215, 0, 0.1);
+            border-radius: 30px;
+            padding: 50px;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             overflow: hidden;
         }
@@ -383,328 +521,648 @@
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--gradient-main);
-            transform: scaleX(0);
-            transition: transform 0.4s;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), transparent, rgba(147, 51, 234, 0.1));
+            opacity: 0;
+            transition: opacity 0.5s;
         }
 
         .feature-card:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(99, 102, 241, 0.3);
-            transform: translateY(-10px);
+            transform: translateY(-15px);
+            border-color: rgba(255, 215, 0, 0.4);
+            box-shadow: 0 40px 80px rgba(255, 215, 0, 0.15), 0 0 100px rgba(147, 51, 234, 0.1);
         }
 
         .feature-card:hover::before {
-            transform: scaleX(1);
+            opacity: 1;
         }
 
         .feature-icon {
-            width: 60px;
-            height: 60px;
-            background: var(--gradient-main);
-            border-radius: 16px;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #FFD700, #FF8C00, #9333EA);
+            border-radius: 22px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
-            margin-bottom: 25px;
+            font-size: 2.2em;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.3);
+            position: relative;
+            z-index: 1;
         }
 
         .feature-card h3 {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 15px;
+            font-size: 1.6em;
+            font-weight: 700;
+            margin-bottom: 18px;
+            color: #fff;
+            position: relative;
+            z-index: 1;
         }
 
         .feature-card p {
             color: rgba(255, 255, 255, 0.6);
-            line-height: 1.7;
+            line-height: 1.8;
+            font-size: 1.05em;
+            position: relative;
+            z-index: 1;
         }
 
-        /* Technology Section */
-        .technology {
-            padding: 120px 60px;
-            background: rgba(99, 102, 241, 0.03);
+        /* Stats Section */
+        .stats {
+            padding: 120px 0;
+            position: relative;
         }
 
-        .tech-grid {
+        .stats::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, transparent 0%, rgba(255, 215, 0, 0.03) 50%, transparent 100%);
+        }
+
+        .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 40px;
-            max-width: 1200px;
-            margin: 0 auto;
+            gap: 35px;
+            position: relative;
+            z-index: 1;
         }
 
-        .tech-item {
+        .stat-card {
             text-align: center;
-            padding: 40px 20px;
+            padding: 50px 30px;
             background: rgba(255, 255, 255, 0.02);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s;
+            border: 1px solid rgba(255, 215, 0, 0.1);
+            border-radius: 25px;
+            transition: all 0.4s;
         }
 
-        .tech-item:hover {
-            transform: translateY(-5px);
-            border-color: rgba(99, 102, 241, 0.3);
+        .stat-card:hover {
+            border-color: rgba(255, 215, 0, 0.5);
+            background: rgba(255, 215, 0, 0.05);
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(255, 215, 0, 0.15);
         }
 
-        .tech-item h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 42px;
-            font-weight: 700;
-            background: var(--gradient-main);
+        .stat-card h3 {
+            font-size: 3.5em;
+            font-weight: 900;
+            background: linear-gradient(135deg, #FFD700, #FFA500, #22D3EE);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));
         }
 
-        .tech-item p {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 16px;
+        .stat-card p {
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 600;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        /* CTA Section */
-        .cta {
-            padding: 120px 60px;
+        /* Install Section */
+        .install {
+            padding: 150px 0;
             text-align: center;
         }
 
-        .cta-box {
-            max-width: 900px;
+        .install-box {
+            max-width: 950px;
             margin: 0 auto;
-            padding: 80px;
-            background: var(--gradient-main);
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.15), rgba(6, 182, 212, 0.08), rgba(255, 215, 0, 0.05));
+            border: 1px solid rgba(255, 215, 0, 0.2);
             border-radius: 40px;
+            padding: 80px;
             position: relative;
             overflow: hidden;
         }
 
-        .cta-box::before {
+        .install-box::before {
             content: '';
             position: absolute;
             top: -50%;
-            right: -50%;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 60%);
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.05), transparent 50%);
+            animation: rotate 20s linear infinite;
         }
 
-        .cta-box h2 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 42px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            position: relative;
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
         }
 
-        .cta-box p {
-            font-size: 18px;
-            opacity: 0.9;
-            margin-bottom: 40px;
+        .code-container {
+            background: #0a0510;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 20px;
+            padding: 30px 35px;
+            margin: 40px 0;
             position: relative;
+            text-align: left;
+            overflow-x: auto;
+            z-index: 1;
         }
 
-        .cta-box .btn {
-            background: #fff;
-            color: var(--primary-dark);
-            position: relative;
+        .code-container code {
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            color: #22D3EE;
+            font-size: 1.15em;
+            text-shadow: 0 0 20px rgba(34, 211, 238, 0.3);
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #9333EA, #7C3AED);
+            border: none;
+            color: #fff;
+            padding: 12px 22px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .copy-btn:hover {
+            background: linear-gradient(135deg, #A855F7, #9333EA);
+            box-shadow: 0 10px 30px rgba(147, 51, 234, 0.4);
         }
 
         /* Footer */
         footer {
-            padding: 60px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            text-align: center;
+            padding: 100px 0 50px;
+            border-top: 1px solid rgba(255, 215, 0, 0.1);
         }
 
-        .footer-links {
+        .footer-content {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
             gap: 40px;
-            margin-bottom: 30px;
         }
 
-        .footer-links a {
-            color: rgba(255, 255, 255, 0.6);
+        .social-links {
+            display: flex;
+            gap: 18px;
+        }
+
+        .social-links a {
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(147, 51, 234, 0.1));
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
-            transition: color 0.3s;
+            transition: all 0.4s;
         }
 
-        .footer-links a:hover {
-            color: #fff;
+        .social-links a:hover {
+            background: linear-gradient(135deg, #FFD700, #FF8C00);
+            border-color: #FFD700;
+            color: #000;
+            transform: translateY(-8px) rotate(5deg);
+            box-shadow: 0 20px 40px rgba(255, 215, 0, 0.3);
         }
 
-        footer p {
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 14px;
-        }
-
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .tech-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        .copyright {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.95em;
+            text-align: center;
+            margin-top: 60px;
         }
 
         @media (max-width: 768px) {
-            header {
-                padding: 15px 20px;
-            }
-
-            nav {
-                display: none;
-            }
-
             .hero h1 {
-                font-size: 36px;
+                font-size: 2.8em;
             }
 
-            .hero p {
-                font-size: 16px;
+            .price-tag {
+                font-size: 2em;
+                padding: 25px 50px;
             }
 
-            .features,
-            .technology,
-            .cta {
-                padding: 80px 20px;
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .nav-links {
+                display: none;
             }
 
             .feature-grid {
                 grid-template-columns: 1fr;
             }
 
-            .tech-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 20px;
-            }
-
-            .cta-box {
-                padding: 40px 20px;
+            .install-box {
+                padding: 50px 30px;
             }
         }
     </style>
 </head>
 
 <body>
-    <div class="bg-animation"></div>
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
+    <!-- Coin Background with Animation -->
+    <div class="coin-background"></div>
+
+    <div class="premium-bg">
+        <div class="orb orb-gold"></div>
+        <div class="orb orb-purple"></div>
+        <div class="orb orb-cyan"></div>
+        <div class="orb orb-pink"></div>
+    </div>
+
 
     <header>
-        <div class="logo">
-            <div class="logo-icon">⚡</div>
-            QuantumPulse
-        </div>
-        <nav>
-            <a href="#features">Features</a>
-            <a href="#technology">Technology</a>
-            <a href="explorer/">Explorer</a>
-            <a href="docs/WHITEPAPER.html">Whitepaper</a>
-            <a href="https://github.com/quantumpulse-foundation/quantumpulse" class="nav-btn">GitHub</a>
+        <nav class="container">
+            <div class="logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">QuantumPulse</span>
+            </div>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#stats">Economics</a>
+                <a href="#install">Install</a>
+                <a href="https://github.com/quantumpulse-foundation/quantumpulse" target="_blank">GitHub</a>
+            </div>
         </nav>
     </header>
 
     <section class="hero">
-        <div class="hero-badge">Quantum-Resistant Technology</div>
-        <h1>The Future of<br><span>Cryptocurrency</span></h1>
-        <p>Experience next-generation blockchain technology with military-grade security and lightning-fast
-            transactions.</p>
-        <div class="hero-buttons">
-            <a href="explorer/" class="btn btn-primary">
-                <span>🔍</span> Block Explorer
-            </a>
-            <a href="docs/WHITEPAPER.html" class="btn btn-secondary">
-                <span>📄</span> Read Whitepaper
-            </a>
+        <div class="hero-glow"></div>
+        <div class="container">
+            <div class="hero-badge">
+                🔐 Quantum-Resistant • Military-Grade Security • Post-Quantum Cryptography
+            </div>
+            <h1>The Future of Money<br>is Quantum-Resistant</h1>
+            <p>QuantumPulse combines military-grade post-quantum cryptography with guaranteed minimum value. Start
+                mining your fortune today.</p>
+
+            <div class="price-showcase">
+                <span class="price-label">✨ GUARANTEED MINIMUM PRICE</span>
+                <div class="price-tag">💎 $600,000 / QP</div>
+            </div>
+
+            <div class="cta-buttons">
+                <a href="#install" class="btn btn-primary">⛏️ Start Mining Now</a>
+                <a href="https://github.com/quantumpulse-foundation/quantumpulse" class="btn btn-secondary"
+                    target="_blank">📦 View Source Code</a>
+            </div>
         </div>
     </section>
 
     <section class="features" id="features">
-        <div class="section-header">
-            <h2>Why Choose QuantumPulse?</h2>
-            <p>Built with cutting-edge technology for the demands of tomorrow</p>
-        </div>
-        <div class="feature-grid">
-            <div class="feature-card">
-                <div class="feature-icon">🔐</div>
-                <h3>Quantum Resistant</h3>
-                <p>Protected against future quantum computer attacks with SHA3-512 cryptography and post-quantum
-                    algorithms.</p>
+        <div class="container">
+            <div class="section-header">
+                <h2>Why Choose QuantumPulse?</h2>
+                <p>Next-generation cryptocurrency with unmatched security and guaranteed value</p>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">⚡</div>
-                <h3>Lightning Network</h3>
-                <p>Instant off-chain payments with near-zero fees. Scale to millions of transactions per second.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🔄</div>
-                <h3>Atomic Swaps</h3>
-                <p>Trustless cross-chain trading with Bitcoin, Ethereum, and other major cryptocurrencies.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📈</div>
-                <h3>Staking Rewards</h3>
-                <p>Earn up to 20% APY by staking your coins. Passive income for long-term holders.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🛡️</div>
-                <h3>Military-Grade Security</h3>
-                <p>AES-256-GCM encryption, intrusion detection, DDoS protection, and multi-signature wallets.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🌐</div>
-                <h3>Decentralized</h3>
-                <p>Fully decentralized network with no single point of failure. True peer-to-peer transactions.</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="technology" id="technology">
-        <div class="section-header">
-            <h2>Technology Specs</h2>
-            <p>Enterprise-grade infrastructure for reliability and performance</p>
-        </div>
-        <div class="tech-grid">
-            <div class="tech-item">
-                <h3>SHA3-512</h3>
-                <p>Cryptographic Hash</p>
-            </div>
-            <div class="tech-item">
-                <h3>210K</h3>
-                <p>Halving Interval</p>
-            </div>
-            <div class="tech-item">
-                <h3>20%</h3>
-                <p>Max Staking APY</p>
-            </div>
-            <div class="tech-item">
-                <h3>10 min</h3>
-                <p>Block Time</p>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔐</div>
+                    <h3>Quantum-Resistant Security</h3>
+                    <p>SHA3-512 double hashing combined with Kyber, Dilithium & SPHINCS+ post-quantum cryptography.
+                        Completely future-proof against quantum computer attacks.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💎</div>
+                    <h3>Guaranteed Value Floor</h3>
+                    <p>Protocol-enforced minimum price of $600,000 USD per coin. Your wealth is protected by code, not
+                        empty promises.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Ultimate Privacy</h3>
+                    <p>Stealth addresses, ring signatures, zero-knowledge proofs, and confidential transactions ensure
+                        your financial privacy.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>AI-Powered Protection</h3>
+                    <p>Self-healing code, automatic vulnerability detection, threat classification, and anomaly
+                        detection powered by advanced AI.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Blazing Fast Performance</h3>
+                    <p>Multi-threaded mining, advanced sharding, and optimized consensus mechanisms for maximum speed
+                        and scalability.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Military-Grade Encryption</h3>
+                    <p>AES-256-GCM encryption with 600,000 PBKDF2 iterations. The same security trusted by governments
+                        worldwide.</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <section class="cta">
-        <div class="cta-box">
-            <h2>Ready to Get Started?</h2>
-            <p>Join the future of decentralized finance with QuantumPulse</p>
-            <a href="explorer/" class="btn">Explore the Blockchain</a>
+    <section class="stats" id="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>5M</h3>
+                    <p>Total Supply</p>
+                </div>
+                <div class="stat-card">
+                    <h3>50 QP</h3>
+                    <p>Block Reward</p>
+                </div>
+                <div class="stat-card">
+                    <h3>$600K</h3>
+                    <p>Min Price</p>
+                </div>
+                <div class="stat-card">
+                    <h3>210K</h3>
+                    <p>Halving Blocks</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="install" id="install">
+        <div class="container">
+            <div class="install-box">
+                <div class="section-header" style="margin-bottom: 20px;">
+                    <h2>⚡ One-Click Install</h2>
+                    <p>Start mining in under 5 minutes!</p>
+                </div>
+
+                <div class="code-container">
+                    <button class="copy-btn" onclick="copyCode()">📋 Copy</button>
+                    <code>curl -sSL https://raw.githubusercontent.com/quantumpulse-foundation/quantumpulse/main/install.sh | bash</code>
+                </div>
+
+                <a href="https://github.com/quantumpulse-foundation/quantumpulse" class="btn btn-primary"
+                    target="_blank">📥 Download from GitHub</a>
+            </div>
         </div>
     </section>
 
     <footer>
-        <div class="footer-links">
-            <a href="explorer/">Block Explorer</a>
-            <a href="docs/WHITEPAPER.html">Whitepaper</a>
-            <a href="https://github.com/quantumpulse-foundation/quantumpulse">GitHub</a>
+        <div class="container">
+            <div class="footer-content">
+                <div class="logo">
+                    <span class="logo-icon">⚡</span>
+                    <span class="logo-text">QuantumPulse</span>
+                </div>
+                <div class="social-links">
+                    <a href="https://github.com/quantumpulse-foundation/quantumpulse" target="_blank">
+                        <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.605-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z" />
+                        </svg>
+                    </a>
+                    <a href="#"><svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
+                        </svg></a>
+                    <a href="#"><svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z" />
+                        </svg></a>
+                    <a href="#"><svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                        </svg></a>
+                </div>
+            </div>
+            <p class="copyright">© 2024 QuantumPulse Foundation. Open Source • Decentralized • Quantum-Resistant</p>
         </div>
-        <p>&copy; 2024 QuantumPulse Foundation. All rights reserved.</p>
     </footer>
+
+    <script>
+        function copyCode() {
+            const code = "curl -sSL https://raw.githubusercontent.com/quantumpulse-foundation/quantumpulse/main/install.sh | bash";
+            navigator.clipboard.writeText(code);
+            const btn = document.querySelector('.copy-btn');
+            btn.innerHTML = '✅ Copied!';
+            btn.style.background = 'linear-gradient(135deg, #10B981, #059669)';
+            setTimeout(() => {
+                btn.innerHTML = '📋 Copy';
+                btn.style.background = 'linear-gradient(135deg, #9333EA, #7C3AED)';
+            }, 2000);
+        }
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+
+    <!-- Golden Cursor Follower Particles -->
+    <canvas id="particle-canvas"></canvas>
+    <style>
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 999;
+            pointer-events: none;
+        }
+    </style>
+    <script>
+        // ╔═══════════════════════════════════════════════════════════════════════╗
+        // ║  ✨ GOLDEN CURSOR FOLLOWER PARTICLES ✨                               ║
+        // ╚═══════════════════════════════════════════════════════════════════════╝
+
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        let mouseX = 0;
+        let mouseY = 0;
+
+        // Golden colors with more variety
+        const goldenColors = [
+            'rgba(255, 215, 0, ',      // Gold
+            'rgba(255, 200, 50, ',     // Light gold
+            'rgba(255, 180, 0, ',      // Deep gold
+            'rgba(255, 230, 100, ',    // Pale gold
+            'rgba(218, 165, 32, ',     // Goldenrod
+            'rgba(255, 245, 150, ',    // Bright sparkle
+            'rgba(255, 190, 80, ',     // Warm gold
+        ];
+
+        class Particle {
+            constructor(x, y, type = 'normal') {
+                this.x = x + (Math.random() - 0.5) * 20;
+                this.y = y + (Math.random() - 0.5) * 20;
+                this.type = type;
+
+                if (type === 'sparkle') {
+                    this.size = Math.random() * 3 + 1;
+                    this.speedX = (Math.random() - 0.5) * 6;
+                    this.speedY = (Math.random() - 0.5) * 6;
+                    this.life = 1;
+                    this.decay = 0.03;
+                    this.rotation = Math.random() * Math.PI * 2;
+                    this.rotationSpeed = (Math.random() - 0.5) * 0.2;
+                } else if (type === 'star') {
+                    this.size = Math.random() * 8 + 4;
+                    this.speedX = (Math.random() - 0.5) * 1;
+                    this.speedY = (Math.random() - 0.5) * 1 - 0.5;
+                    this.life = 1;
+                    this.decay = 0.015;
+                    this.points = 4;
+                } else {
+                    this.size = Math.random() * 5 + 2;
+                    this.speedX = (Math.random() - 0.5) * 3;
+                    this.speedY = (Math.random() - 0.5) * 3 - 1;
+                    this.life = 1;
+                    this.decay = Math.random() * 0.02 + 0.01;
+                }
+
+                this.gravity = 0.02;
+                this.color = goldenColors[Math.floor(Math.random() * goldenColors.length)];
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.speedY += this.gravity;
+                this.life -= this.decay;
+                this.size *= 0.97;
+
+                if (this.type === 'sparkle') {
+                    this.rotation += this.rotationSpeed;
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.life;
+
+                if (this.type === 'star') {
+                    // Draw star shape
+                    ctx.translate(this.x, this.y);
+                    ctx.beginPath();
+                    for (let i = 0; i < this.points * 2; i++) {
+                        const radius = i % 2 === 0 ? this.size : this.size / 2;
+                        const angle = (i * Math.PI) / this.points;
+                        if (i === 0) {
+                            ctx.moveTo(Math.cos(angle) * radius, Math.sin(angle) * radius);
+                        } else {
+                            ctx.lineTo(Math.cos(angle) * radius, Math.sin(angle) * radius);
+                        }
+                    }
+                    ctx.closePath();
+                    ctx.fillStyle = this.color + this.life + ')';
+                    ctx.shadowBlur = 25;
+                    ctx.shadowColor = 'rgba(255, 200, 50, 0.8)';
+                    ctx.fill();
+                } else if (this.type === 'sparkle') {
+                    // Draw sparkle (diamond shape)
+                    ctx.translate(this.x, this.y);
+                    ctx.rotate(this.rotation);
+                    ctx.beginPath();
+                    ctx.moveTo(0, -this.size);
+                    ctx.lineTo(this.size * 0.5, 0);
+                    ctx.lineTo(0, this.size);
+                    ctx.lineTo(-this.size * 0.5, 0);
+                    ctx.closePath();
+                    ctx.fillStyle = this.color + this.life + ')';
+                    ctx.shadowBlur = 15;
+                    ctx.shadowColor = 'rgba(255, 230, 100, 0.9)';
+                    ctx.fill();
+                } else {
+                    // Draw circle with glow
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color + this.life + ')';
+                    ctx.shadowBlur = 20;
+                    ctx.shadowColor = 'rgba(255, 200, 50, 0.6)';
+                    ctx.fill();
+
+                    // Inner bright core
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size * 0.4, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(255, 255, 200, ' + (this.life * 0.8) + ')';
+                    ctx.fill();
+                }
+
+                ctx.restore();
+            }
+        }
+
+        // Track mouse movement
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+
+            // Add mixed particle types at cursor
+            const types = ['normal', 'normal', 'sparkle', 'star'];
+            for (let i = 0; i < 4; i++) {
+                const type = types[Math.floor(Math.random() * types.length)];
+                particles.push(new Particle(mouseX, mouseY, type));
+            }
+        });
+
+        // Animation loop
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Update and draw particles
+            for (let i = particles.length - 1; i >= 0; i--) {
+                particles[i].update();
+                particles[i].draw();
+
+                // Remove dead particles
+                if (particles[i].life <= 0 || particles[i].size <= 0.5) {
+                    particles.splice(i, 1);
+                }
+            }
+
+            // Limit particle count
+            if (particles.length > 150) {
+                particles.splice(0, particles.length - 150);
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        // Handle resize
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        console.log('✨ Golden Cursor Particles | Follow Mouse | Glow Effect');
+    </script>
+
 </body>
 
 </html>
