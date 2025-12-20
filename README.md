@@ -1,6 +1,6 @@
 # QuantumPulse
 
-> 🔐 Quantum-Resistant Cryptocurrency with $600,000 Minimum Price
+> 🔐 Quantum-Resistant Cryptocurrency
 
 [![Build](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/quantumpulse-foundation/quantumpulse)
 [![Version](https://img.shields.io/badge/version-7.0.0-blue)](https://github.com/quantumpulse-foundation/quantumpulse/releases)
@@ -17,7 +17,7 @@ curl -sSL https://raw.githubusercontent.com/quantumpulse-foundation/quantumpulse
 | Feature | Description |
 |---------|-------------|
 | **Quantum-Resistant** | SHA3-512 + Post-quantum cryptography |
-| **Price Floor** | Minimum $600,000 USD per QP |
+
 | **Total Coins** | 5,000,000 QP maximum supply |
 | **Block Reward** | 50 QP (halves every 210,000 blocks) |
 | **Privacy** | Stealth addresses, ring signatures |
@@ -72,7 +72,7 @@ make -j$(nproc)
 - **Total Supply:** 5,000,000 QP
 - **Mineable:** 3,000,000 QP
 - **Block Reward:** 50 QP (halving every 210K blocks)
-- **Minimum Price:** $600,000 USD/QP
+
 
 ## 🌐 Join Community
 
